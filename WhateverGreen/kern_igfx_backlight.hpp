@@ -20,6 +20,16 @@ static constexpr uint32_t BXT_BLC_PWM_CTL1 = 0xC8250;
 static constexpr uint32_t BXT_BLC_PWM_FREQ1 = 0xC8254;
 static constexpr uint32_t BXT_BLC_PWM_DUTY1 = 0xC8258;
 
+static constexpr uint32_t SFUSE_STRAP = 0xC2014;
+static constexpr uint32_t SFUSE_STRAP_RAW_FREQUENCY = 1 << 8;
+
+/**
+ * Ice Lake freq
+ * Copied from `AppleIntelFramebufferController::start()` function
+ */
+static constexpr uint32_t ICL_FREQ_NORMAL = 17777;
+static constexpr uint32_t ICL_FREQ_RAW = 22222;
+
 /**
  *  Represents a single brightness adjustment request
  */
@@ -45,6 +55,11 @@ struct BrightnessRequest {
 	uint32_t mask {0};
 	
 	/**
+	 * The request ID to check if the request was changed
+	 */
+	uint32_t id {0};
+	
+	/**
 	 *  Create an empty request
 	 */
 	BrightnessRequest() = default;
@@ -52,8 +67,8 @@ struct BrightnessRequest {
 	/**
 	 *  Create a brightness request
 	 */
-	BrightnessRequest(void *controller, uint32_t address, uint32_t target, uint32_t mask = 0xFFFFFFFF) :
-		controller(controller), address(address), target(target), mask(mask) {}
+	BrightnessRequest(uint32_t id, void *controller, uint32_t address, uint32_t target, uint32_t mask = 0xFFFFFFFF) :
+		id(id), controller(controller), address(address), target(target), mask(mask) {}
 	
 	/**
 	 *  Get the current brightness level
@@ -84,11 +99,6 @@ struct BrightnessRequest {
 		return brightness | (target & ~mask);
 	}
 };
-
-/**
- *  Type of the adjustment request queue
- */
-using BrightnessRequestQueue = CircularBuffer<BrightnessRequest>;
 
 /**
  *  An event source that adjusts the brightness smoothly

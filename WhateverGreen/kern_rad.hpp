@@ -58,12 +58,14 @@ public:
 	 *  @return true if patched anything
 	 */
 	bool processKext(KernelPatcher &patcher, size_t index, mach_vm_address_t address, size_t size);
-
-private:
+	
 	/**
 	 *  Private self instance for callbacks
 	 */
 	static RAD *callbackRAD;
+
+private:
+	
 
 	/**
 	 *  Original set property function
@@ -179,6 +181,24 @@ private:
 	 */
 	mach_vm_address_t orgAMDRadeonX6000AmdRadeonFramebufferGetAttribute {};
 	
+	mach_vm_address_t origAMDRadeonX6000AmdRadeonControllerNavi2getVUpdateVBlankInterval {};
+	
+	mach_vm_address_t origAMDRadeonX6000AmdRadeonFramebuffervalidateDetailedTiming {};
+	
+	mach_vm_address_t origAMDRadeonX6000AmdAgdcServicesnotifyLinkChange {};
+	
+	mach_vm_address_t origAMDRadeonX6000AmdAgdcServicesnotifyModeSet {};
+
+	mach_vm_address_t origAMDRadeonX6000AmdAgdcServicesnotifyModeValidation {};
+
+	mach_vm_address_t origAMDRadeonX6000AmdAgdcServicesoverrideTimingRange {};
+	
+	mach_vm_address_t origAMDRadeonX6000AmdLoggersetAllLogging {};
+	
+	mach_vm_address_t origAMDRadeonX6000AmdAgdcServicessetFbEdid {};
+	
+	mach_vm_address_t origAMDRadeonX6000AmdLoggerlogTiming {};
+
 	/**
 	 *  Wrapped dce_panel_cntl_hw_init function to get the panel_cntl pointor
 	 */
@@ -193,6 +213,28 @@ private:
 	 *  Wrapped AMDRadeonX6000_AmdRadeonFramebuffer::GetAttribute functions
 	 */
 	static IOReturn wrapAMDRadeonX6000AmdRadeonFramebufferGetAttribute(IOService *framebuffer, IOIndex connectIndex, IOSelect attribute, uintptr_t * value);
+	
+	// AMDRadeonX6000_AmdRadeonControllerNavi::getVUpdateVBlankInterval(int, _VUpdateVBlankInterval *)
+	static int wrapAMDRadeonX6000AmdRadeonControllerNavi2getVUpdateVBlankInterval(void* self, unsigned int index, int32_t* outVal);
+
+	static int64_t wrapAMDRadeonX6000AmdRadeonFramebuffervalidateDetailedTiming(void* self, char *a2, int64_t a3, double a4, double a5);
+	
+	static int64_t wrapAMDRadeonX6000AmdAgdcServicesnotifyLinkChange(void* self, unsigned int AmdLinkChangeEvent, uint8_t modeStatusMinusOne);
+	
+	static int64_t wrapAMDRadeonX6000AmdAgdcServicesnotifyModeSet(void* self, unsigned int a2, void* AmdDetailedTimingInformation, void* IOPixelInformation, char a5, int a6);
+
+	static int64_t wrapAMDRadeonX6000AmdAgdcServicesnotifyModeValidation(void* self, unsigned int a2, void* AmdDetailedTimingInformation, void* AmdFbDisplayPath);
+
+	static int64_t wrapAMDRadeonX6000AmdAgdcServicesoverrideTimingRange(void* self, void* AGDCFBOverrideTimingRange_t, int64_t a3);
+	
+	static int64_t wrapAMDRadeonX6000AmdAgdcServicessetFbEdid(void* self, void* AGDCFBSetEDIDData_t, u_long a3);
+	
+	static void wrapAMDRadeonX6000AmdLoggerlogTiming(void* self, int64_t LogType, int64_t LogSeverity, void* AmdDetailedTimingInformation);
+	
+public:
+	static int64_t wrapAMDRadeonX6000AmdLoggersetAllLogging(void* AMDRadeonX6000_AmdLogger, unsigned int a2);
+	
+private:
 
 	/**
 	 *  Framebuffer base function names

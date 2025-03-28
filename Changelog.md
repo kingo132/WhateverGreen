@@ -1,9 +1,58 @@
-WhateverGreen Changelog
+ WhateverGreen Changelog
 =======================
+#### v1.6.9
+- Added Alder Lake/Raptor Lake/Arrow Lake CPU detection
+
+#### v1.6.8
+- Fixed loading on macOS 10.10 and older due to a MacKernelSDK regression
+
+#### v1.6.7
+- Added constants for macOS 15 support
+- Fixed short-circuit evaluation from brightness bound overrides, thanks @damiponce and Gwy
+
+#### v1.6.6
+- Extended the Backlight Registers Alternative Fix (BLT) submodule to support both KBL and CFL platforms. (by @0xFireWolf)
+- Revised the Backlight Registers Fix (BLR) submodule to make it compatible with the Backlight Smoother (BLS) on KBL platforms. (by @0xFireWolf)
+
+#### v1.6.5
+- Added constants for macOS 14 support
+- Added a new boot argument `-igfxblt` to revert the optimizations done by the compiler in backlight related functions, fixing the 3-minute dark screen issue and making Backlight Smoother (BLS) work on mobile Coffee Lake platforms running macOS 13.4 or later. (by @0xFireWolf)
+
+#### v1.6.4
+- Fixed Radeon RX 5500 XT identification regression
+
+#### v1.6.3
+- Added various GPU identifiers from different Macs
+- Added `disable-telemetry-load` to disable iGPU telemetry loading that may cause a freeze during startup on certain laptops such as Chromebooks.
+
+#### v1.6.2
+- Added W7170M/S7100X ID
+
+#### v1.6.1 
+- Improved Skylake graphics spoofing support by removing profile 2 from VTSupportedProfileArray on macOS 13+, thanks @abenraj and @dhinakg
+
+#### v1.6.0
+- Added constants required for macOS 13 update
+- Added Skylake graphics spoofing support on macOS 13+ by @dhinakg
+- Modified brightness change requests to replace previous requests instead of queuing
+
+#### v1.5.9
+- Add AMD prefix for all Radeon cards to follow latest Apple naming scheme
+
+#### v1.5.8
+- Inverted logic for GVA support, which is now disabled by default and can be enabled by `enable-gva-support`.
+
+#### v1.5.7
+- Fixed maximum backlight level on Ice Lake IGPUs
+
+#### v1.5.6
+- Fixed deprecated code in unfairgva
+
 #### v1.5.5
 - Changed the default delay of optimizing display data buffer allocations from 0 to 1 second to fix the issue that both internal and external displays flicker on some Ice Lake-based laptops. (Thanks @m0d16l14n1)
 - Disabled the black screen fix on Ice Lake platforms as it is only applicable to SKL/KBL/CFL/CML platforms.
 - Disabled the force complete modeset submodule on Ice Lake platforms as HDMI/DVI connections are not supported by the driver.
+- Added AMD Radeon RX 5000 series PWM backlight control support. (Thanks to @kingo132)
 
 #### v1.5.4
 - Added the fix for the short period garbled screen after the system boots on Ice Lake platforms. (by @0xFireWolf, also thanks @m0d16l14n1 and @kingo132)
